@@ -82,6 +82,7 @@ class Player {
         this.animationType = 'standing';
         this.animationTimer = 1;
         this.sprite = 'frank';
+        this.currentCanvas = ''
         if (playerID === 1) {
             this.color = "#FFFFFF";
         }
@@ -105,7 +106,7 @@ class Player {
                 //newCanvas('1-frank-Idle-1','spriteGen',16,16);
                 newCanvas(this.playerID + '-' + this.sprite + '-' + 'Idle-1','spriteGen',16,16);
                 //document.getElementById(this.playerID + '-' + this.sprite + '-' + 'Idle-1').putImageData(drawSprite(document.getElementById(this.playerID + '-' + this.sprite + '-' + 'Idle-1'),this.color),0,0)
-                document.getElementById(this.playerID + '-' + this.sprite + '-' + 'Idle-1').putImageData(drawSprite('player',this.color),0,0)
+                document.getElementById(this.playerID + '-' + this.sprite + '-' + 'Idle-1').putImageData(drawSprite('player',this.color),0,0);
             }
         }
     }
@@ -283,13 +284,13 @@ function startGame() {
         //playerArr[i] = new Player(i, Math.floor(((i+1)/(playerNum+1))*playerSpawnDist-(playerSpawnDist/2)), {type: 'keyboard', up: 38, right: 39, down: 40, left: 37});
         if (platform === 'computer') {
             if (i === 0) {
-                playerArr[i] = new Player(i, Math.floor(((i+1)/(playerNum+1))*playerSpawnDist-(playerSpawnDist/2)), {type: 'keyboard', up: 38, right: 39, down: 40, left: 37});
+                playerArr[i] = new Player(i+1, Math.floor(((i+1)/(playerNum+1))*playerSpawnDist-(playerSpawnDist/2)), {type: 'keyboard', up: 38, right: 39, down: 40, left: 37});
             }
             else if (i === 1) {
-                playerArr[i] = new Player(i, Math.floor(((i+1)/(playerNum+1))*playerSpawnDist-(playerSpawnDist/2)), {type: 'keyboard', up: 87, right: 68, down: 83, left: 65});
+                playerArr[i] = new Player(i+1, Math.floor(((i+1)/(playerNum+1))*playerSpawnDist-(playerSpawnDist/2)), {type: 'keyboard', up: 87, right: 68, down: 83, left: 65});
             }
             else if (i === 2) {
-                playerArr[i] = new Player(i, Math.floor(((i+1)/(playerNum+1))*playerSpawnDist-(playerSpawnDist/2)), {type: 'keyboard', up: 73, right: 76, down: 75, left: 74});
+                playerArr[i] = new Player(i+1, Math.floor(((i+1)/(playerNum+1))*playerSpawnDist-(playerSpawnDist/2)), {type: 'keyboard', up: 73, right: 76, down: 75, left: 74});
             }
         }
     }

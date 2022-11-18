@@ -156,10 +156,14 @@ function isCollide(box1, box2, aChange, bChange, isBox) {
 
 newCanvas('tempCan','spriteGen',16,16);
 function drawSprite(referenceElement, color) {
+    //generate color string
+    let colorString = color.substring(1);
+
+    //draw temporary image in new color and return its data
+    tempCan.getContext('2d').clearRect(0,0,16,16);
     tempCan.getContext('2d').drawImage(document.getElementById(referenceElement),0,0,16,16);
     let imgArr = tempCan.getContext('2d').getImageData(0,0,16,16);
     let returnArr = new Uint8ClampedArray(1024);
-    let colorString = color.substring(1);
     for (i = 0; i < imgArr.data.length; i += 4) {
         if (imgArr.data[i] === 255) {
             returnArr[i + 0] = Number('0x' + colorString.slice(0, 2));
