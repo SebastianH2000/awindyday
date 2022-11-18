@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website</title>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="fonts\summer-pixel-22-font" rel="stylesheet">
+</head>
+<body>
+  <div id="imageContainer" style="display: none">
+    <canvas id="groundCanvas"></canvas>
+    <img id="title" src="images/title.png">
+
+    <img id="ground1" src="images/ground1.png">
+    <img id="ground2" src="images/ground2.png">
+    <img id="ground3" src="images/ground3.png">
+    <img id="ground4" src="images/ground4.png">
+
+    <img id="1x1block1" src="images/1x1block1.png">
+  </div>
+
+  <div id="sprites" style="display: none">
+    <img id="player" src="C:\Users\SebastianH2000\Desktop\Coding - Games\a-windy-day\images\player.png">
+  </div>
+
+  <div id="spriteGen" style="display: none"></div>
+
+<div id="gamePage">
+  <div id="startMenu" width="512px" height="288px">
+    <div class="spacingBlock"></div>
+    <img width="256px" height="64px" src="images/title.png" style="margin: 0px 0px 8px 0px">
+    <div id="platformDisplay" onclick="togglePlatform()" class="textToggle" style="width: 160px">Platform: Computer/PC</div>
+    <div id="playerNumDisplay" onclick="togglePlayerNum()" class="textToggle" style="width: 160px">Number of Players: 1</div>
+    <div id="gameModeDisplay" onclick="toggleGameMode()" class="textToggle" style="margin: 4px; width: 160px;">Game Mode: Versus</div>
+    <div id="mainMenuSpacer"></div>
+    <div onclick="switchMenu('player')" class="textToggle" style="text-decoration: underline;">Start</div>
+    <div id="mobileNote" class="footnote">*On mobile there is a maximum of two players</div>
+  </div>
+
+  <div id="playerMenu" width="512px" height="288px">
+    <div class="spacingBlock"></div>
+    <div class="spacingBlock"></div>
+    <div class="row" style="width: 400px">
+      <div id="player1Select" class="playerSelect">
+        <div>Player 1</div>
+        <div class="playerBtn">Controls: Arrow Keys</div>
+        <img width="32px" height="32px" src="images/player.png">
+        <div>Character: Frank</div>
+        <div>Color: White</div>
+      </div>
+
+      <div id="player2Select" class="playerSelect">
+        <div>Player 2</div>
+        <div>Controls: Arrow Keys</div>
+        <img width="32px" height="32px" src="images/player.png">
+        <div>Character: Frank</div>
+        <div>Color: White</div>
+      </div>
+    </div>
+    <div class="spacingBlock"></div>
+    <div class="spacingBlock"></div>
+    <div class="row" style="width: 400px;">
+      <div id="player3Select" class="playerSelect">
+        <div>Player 3</div>
+        <div>Controls: Arrow Keys</div>
+        <img width="32px" height="32px" src="images/player.png">
+        <div>Character: Frank</div>
+        <div>Color: White</div> 
+      </div>
+
+      <div id="player4Select" class="playerSelect">
+        <div>Player 4</div>
+        <div>Controls: Arrow Keys</div>
+        <img width="32px" height="32px" src="images/player.png">
+        <div>Character: Frank</div>
+        <div>Color: White</div>
+      </div>
+    </div>
+    <div class="row">
+      <div onclick="switchMenu('start')" class="textToggle" style="text-decoration: underline;">Back</div>
+      <div class="spacingBlock"></div>
+      <div onclick="startGame()" class="textToggle" style="text-decoration: underline;">Start</div>
+    </div>
+    <div id="mobileNote2" class="footnote">*On mobile there is a maximum of two players</div>
+  </div>
+
+  <canvas id="effects"></canvas>
+
+  <canvas id="myCanvas"></canvas>
+</div>
+
+
+
+  <script type="text/javascript" src="javascripts/canvas.js"></script>
+  <script type="text/javascript" src="javascripts/vector.js"></script>
+  <script type="text/javascript" src="javascripts/control.js"></script>
+  <script type="text/javascript" src="javascripts/player.js"></script>
+  <script type="text/javascript" src="javascripts/pages.js"></script>
+  <script type="text/javascript" src="javascripts/ground.js"></script>
+  <script type="text/javascript" src="javascripts/solid.js"></script>
+  <script type="text/javascript" src="javascripts/particles.js"></script>
+
+  <script type="text/javascript" src="javascripts/game.js"></script>
+</body>
+</html>
