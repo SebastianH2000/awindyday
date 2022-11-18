@@ -20,6 +20,7 @@ var platform = 'computer';
 var gameSpeedMult = 1;
 var gameSpeed = 1;
 
+//player animation stuffs
 var spriteNum = 1;
 var spriteNameArr = ['frank'];
 var spriteArr = {frank: []};
@@ -28,6 +29,12 @@ var sheetNum = 1;
 for (let i = 0; i < spriteNum; i++) {
     spriteArr[spriteNameArr[i]] = new Array(sheetNum);
 }
+
+var animationStateNum = 1;
+
+var animationStateArr = new Array(animationStateNum);
+
+animationStateArr[0] = {frameCount: 1, name: 'idle'};
 
 //standing
 //name system like spriteName-stance-number
@@ -79,7 +86,7 @@ class Player {
         this.upBuffer = 4;
         this.groundBuffer = 4;
         this.jumpBuffer = 4;
-        this.animationType = 'standing';
+        this.animationState = 'standing';
         this.animationTimer = 1;
         this.sprite = 'frank';
         this.currentCanvas = ''
@@ -106,7 +113,7 @@ class Player {
                 //newCanvas('1-frank-Idle-1','spriteGen',16,16);
                 newCanvas(this.playerID + '-' + this.sprite + '-' + 'Idle-1','spriteGen',16,16);
                 //document.getElementById(this.playerID + '-' + this.sprite + '-' + 'Idle-1').putImageData(drawSprite(document.getElementById(this.playerID + '-' + this.sprite + '-' + 'Idle-1'),this.color),0,0)
-                document.getElementById(this.playerID + '-' + this.sprite + '-' + 'Idle-1').putImageData(drawSprite('player',this.color),0,0);
+                document.getElementById(this.playerID + '-' + this.sprite + '-' + 'Idle-1').getContext("2d").putImageData(drawSprite(this.sprite + '-' + this.animationState + '-1',this.color),0,0);
             }
         }
     }
