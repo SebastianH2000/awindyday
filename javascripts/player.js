@@ -105,7 +105,7 @@ class Player {
                 //newCanvas('1-frank-Idle-1','spriteGen',16,16);
                 newCanvas(this.playerID + '-' + this.sprite + '-' + 'Idle-1','spriteGen',16,16);
                 //document.getElementById(this.playerID + '-' + this.sprite + '-' + 'Idle-1').putImageData(drawSprite(document.getElementById(this.playerID + '-' + this.sprite + '-' + 'Idle-1'),this.color),0,0)
-                document.getElementById(this.playerID + '-' + this.sprite + '-' + 'Idle-1').putImageData(drawSprite(document.getElementById('player'),this.color),0,0)
+                document.getElementById(this.playerID + '-' + this.sprite + '-' + 'Idle-1').putImageData(drawSprite('player',this.color),0,0)
             }
         }
     }

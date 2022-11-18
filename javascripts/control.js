@@ -155,11 +155,8 @@ function isCollide(box1, box2, aChange, bChange, isBox) {
 }
 
 newCanvas('tempCan','spriteGen',16,16);
-//document.getElementById('player').setAttribute('crossOrigin', '');
 function drawSprite(referenceElement, color) {
-    referenceElement.setAttribute('crossOrigin', '');
-    tempCan.getContext('2d').drawImage(referenceElement,0,0,16,16);
-    //tempCan.crossOrigin = 'Anonymous'
+    tempCan.getContext('2d').drawImage(document.getElementById(referenceElement),0,0,16,16);
     let imgArr = tempCan.getContext('2d').getImageData(0,0,16,16);
     let returnArr = new Uint8ClampedArray(1024);
     let colorString = color.substring(1);
