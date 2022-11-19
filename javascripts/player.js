@@ -86,7 +86,7 @@ class Player {
         this.upBuffer = 4;
         this.groundBuffer = 4;
         this.jumpBuffer = 4;
-        this.animationState = 'standing';
+        this.animationState = 'idle';
         this.animationTimer = 1;
         this.sprite = 'frank';
         this.currentCanvas = ''
@@ -111,9 +111,9 @@ class Player {
             }
             else {
                 //newCanvas('1-frank-Idle-1','spriteGen',16,16);
-                newCanvas(this.playerID + '-' + this.sprite + '-' + 'Idle-1','spriteGen',16,16);
+                newCanvas(this.id + '-' + this.sprite + '-' + 'Idle-1','spriteGen',16,16);
                 //document.getElementById(this.playerID + '-' + this.sprite + '-' + 'Idle-1').putImageData(drawSprite(document.getElementById(this.playerID + '-' + this.sprite + '-' + 'Idle-1'),this.color),0,0)
-                document.getElementById(this.playerID + '-' + this.sprite + '-' + 'Idle-1').getContext("2d").putImageData(drawSprite(this.sprite + '-' + this.animationState + '-1',this.color),0,0);
+                document.getElementById(this.id + '-' + this.sprite + '-' + 'Idle-1').getContext("2d").putImageData(drawSprite(this.sprite + '-' + this.animationState + '-1',this.color),0,0);
             }
         }
     }
@@ -185,6 +185,7 @@ class Player {
                     while (velX > 0) {
                         if (collideSolids(this.position.x + 1,this.position.y,true)) {
                             velX = 0;
+                            this.velocity.x = 0;
                             this.remainder.x = 0;
                         }
                         else {
@@ -207,6 +208,7 @@ class Player {
                     while (velX < 0) {
                         if (collideSolids(this.position.x - 1,this.position.y,true)) {
                             velX = 0;
+                            this.velocity.x = 0;
                             this.remainder.x = 0;
                         }
                         else {
@@ -242,7 +244,6 @@ class Player {
                             }
                         }
                         else {
-                            //console.log('traveled up')
                             this.position.y++;
                             velY--;
                         }
@@ -255,6 +256,7 @@ class Player {
                     while (velY < 0) {
                         if (collideSolids(this.position.x,this.position.y - 1)) {
                             velY = 0;
+                            this.velocity.y = 0;
                             this.remainder.y = 0;
                             this.isGrounded = true;
                             this.groundBuffer = 4;
