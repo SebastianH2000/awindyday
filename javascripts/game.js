@@ -1,5 +1,6 @@
 var fps = 60;
 gameSpeed = 60/fps*gameSpeedMult;
+//gameSpeed = 1;
 var fpsInv = 1000/fps;
 var lastPage = new Vector(0,0);
 
@@ -33,7 +34,7 @@ function mainLoop() {
     }
 
     else if (gameStates.playing) {
-        ctx.drawImage(document.getElementById("groundCanvas"),-200,camera.roundPosition.y+8,400,16);
+        ctx.drawImage(document.getElementById("groundCanvas"),-200,camera.roundPosition.y+solidArr[0].height/2,400,16);
 
         for (let i = 0; i < playerArr.length; i++) {
             playerArr[i].move();
@@ -48,7 +49,7 @@ function mainLoop() {
                     solidArr[i].warningTimer -= 1/fps;
                 }
                 else {
-                    solidArr[i].Move(new Vector(0,0-solidArr[i].speed/2));
+                    solidArr[i].Move(new Vector(0,0-solidArr[i].speed/2*gameSpeed));
                     solidArr[i].speed += solidArr[i].fallSpeed/4;
                 }
             }
@@ -68,14 +69,9 @@ function mainLoop() {
                 ctx.drawImage(document.getElementById("player"),playerArr[i].position.x-(playerArr[i].width/2),(-playerArr[i].position.y)-(playerArr[i].height/2),playerArr[i].width,playerArr[i].height);
             }
             else {
-                //ctx.translate(0-(playerArr[i].position.x+playerArr[i].width/2,playerArr[i].position.y);
                 ctx.scale(-1,1);
                 ctx.drawImage(document.getElementById("player"),0-playerArr[i].position.x-(playerArr[i].width/2),(-playerArr[i].position.y)-(playerArr[i].height/2),playerArr[i].width,playerArr[i].height);
                 ctx.scale(-1,1);
-                //ctx.translate(0-(playerArr[i].position.x+playerArr[i].width/2),-playerArr[i].position.y)
-                //ctx.setTransform(1,0,0,1,0,0);
-                //ctx.translate(can.width / 2, can.height / 2);
-                //ctx.scale(1 * screenScale, 1 * screenScale);
             }
         }
 

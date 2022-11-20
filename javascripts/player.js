@@ -40,7 +40,7 @@ animationStateArr[0] = {frameCount: 1, name: 'idle'};
 //name system like spriteName-stance-number
 spriteArr['frank'] = [{id: 'player', element: document.getElementById('player')}];
 
-function collideSolids(xPos, yPos, shouldBeSet) {
+/*function collideSolids(xPos, yPos, shouldBeSet) {
     let colliding = false;
     for (let i = 0; i < solidArr.length; i++) {
         if (shouldBeSet !== undefined) {
@@ -69,7 +69,7 @@ function collideSolids(xPos, yPos, shouldBeSet) {
         }
     }
     return colliding;
-}
+}*/
 
 class Player {
     constructor (playerID,xPos,controls) {
@@ -125,12 +125,39 @@ class Player {
         }
     }
 
-    bump (pos) {
-        this.position.y = pos-1;
-        this.velocity.y = 0;
-        if (collideSolids(this.position.x,this.position.y - 1,true)) {
+    bump (pos,vel) {
+        this.position.y = pos-9;
+        this.velocity.y = vel;
+        if (this.collideSolids(0,-1,true)) {
             this.kill();
         }
+    }
+
+    collideSolids (xChange, yChange, shouldBeSet) {
+        let colliding = false;
+        let posX = 0;
+        let posY = 0;
+        if (xChange !== undefined && yChange !== undefined && typeof xChange === 'number' && typeof yChange === 'number') {
+            posX = this.position.x + xChange;
+            posY = this.position.y + yChange;
+        }
+        else {
+            posX = this.position.x;
+            posY = this.position.y;
+        }
+        for(let i = 0; i < solidArr.length; i++) {
+            if (shouldBeSet !== undefined && shouldBeSet && solidArr[i].isSet) {
+                if (rectCollider({x: posX, y: posY, width: this.width, height: this.height}, {x: solidArr[i].position.x, y: solidArr[i].position.y, width: solidArr[i].width, height: solidArr[i].height})) {
+                    colliding = true;
+                }
+            }
+            else {
+                if (rectCollider({x: posX, y: posY, width: this.width, height: this.height}, {x: solidArr[i].position.x, y: solidArr[i].position.y, width: solidArr[i].width, height: solidArr[i].height})) {
+                    colliding = true;
+                }
+            }
+        }
+        return colliding;
     }
 
     move () {
@@ -183,7 +210,7 @@ class Player {
                     this.facing = 'right';
                     this.remainder.x -= velX;
                     while (velX > 0) {
-                        if (collideSolids(this.position.x + 1,this.position.y,true)) {
+                        if (this.collideSolids(1,0)) {
                             velX = 0;
                             this.velocity.x = 0;
                             this.remainder.x = 0;
@@ -206,7 +233,7 @@ class Player {
                     this.facing = 'left';
                     this.remainder.x -= velX;
                     while (velX < 0) {
-                        if (collideSolids(this.position.x - 1,this.position.y,true)) {
+                        if (this.collideSolids(-1,0)) {
                             velX = 0;
                             this.velocity.x = 0;
                             this.remainder.x = 0;
@@ -233,7 +260,7 @@ class Player {
                 if (velY > 0) {
                     this.remainder.y -= velY;
                     while (velY > 0) {
-                        if (collideSolids(this.position.x,this.position.y + 1)) {
+                        if (this.collideSolids(0,1)) {
                             velY = 0;
                             this.remainder.y = 0;
                             if (this.upBuffer > 0) {
@@ -254,7 +281,7 @@ class Player {
                 else {
                     this.remainder.y -= velY;
                     while (velY < 0) {
-                        if (collideSolids(this.position.x,this.position.y - 1)) {
+                        if (this.collideSolids(0,-1)) {
                             velY = 0;
                             this.velocity.y = 0;
                             this.remainder.y = 0;
@@ -271,7 +298,7 @@ class Player {
         }
 
 
-        if (!collideSolids(this.position.x,this.position.y - 1,true)) {
+        if (!this.collideSolids(0,-1)) {
             this.isGrounded = false;
             if (this.groundBuffer > 0) {
                 this.groundBuffer--;

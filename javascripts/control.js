@@ -134,6 +134,17 @@ function fromBijective(x) {
 function isCollide(box1, box2, aChange, bChange, isBox) {
     let a = {position: box1.position.copy(),width: box1.width,height: box1.height};
     let b = {position: box2.position.copy(),width: box2.width,height: box2.height};
+
+    //check if adjacent, if so return false
+    let distanceX = a.position.x - b.position.x;
+    let distanceY = a.position.y - b.position.y;
+    let widthAvg = (a.width + b.width)/2;
+    let heightAvg = (a.height + b.height)/2;
+    if (Math.abs(distanceX) === widthAvg || Math.abs(distanceY) === heightAvg) {
+        return false;
+    }
+
+    //check collision
     a.position.sub(box1.width/2,box1.height/2);
     b.position.sub(box2.width/2,box2.height/2);
     if (aChange !== undefined && bChange !== undefined) {
@@ -152,6 +163,24 @@ function isCollide(box1, box2, aChange, bChange, isBox) {
         ((a.position.x + a.width) < b.position.x) ||
         (a.position.x > (b.position.x + b.width))
     );
+}
+
+/*function rectCollider(a, b) {
+    return !(
+        ((a.y + a.height) < (b.y)) ||
+        (a.y > (b.y + b.height)) ||
+        ((a.x + a.width) < b.x) ||
+        (a.x > (b.x + b.width))
+    );
+}*/
+
+function rectCollider(a, b) {
+    return !(
+        (a.y + a.height/2) <= (b.y - b.height/2) ||
+        (a.y - a.height/2) >= (b.y + b.height/2) ||
+        (a.x + a.width/2) <= (b.x - b.width/2) ||
+        (a.x - a.width/2) >= (b.x + b.width/2)
+    )
 }
 
 newCanvas('tempCan','spriteGen',16,16);
@@ -173,5 +202,6 @@ function drawSprite(referenceElement, color) {
         }
     }
     console.log('heeh');
-    return returnArr;
+    let data = new ImageData(returnArr, 16, 16);
+    return data;
 }
