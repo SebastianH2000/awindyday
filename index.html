@@ -7,7 +7,7 @@
     <title>Website</title>
 
     <link rel="stylesheet" type="text/css" href="style.css">
-    <link href="fonts\summer-pixel-22-font" rel="stylesheet">
+    <link href="fonts/summer-pixel-22-font/SummerPixel22Regular-jE0W7.ttf" rel="stylesheet">
 </head>
 <body>
   <div id="imageContainer" style="display: none">
@@ -47,18 +47,18 @@
     <div class="row" style="width: 400px">
       <div id="player1Select" class="playerSelect">
         <div>Player 1</div>
-        <div class="playerBtn">Controls: Arrow Keys</div>
+        <div class="playerBtn" onclick="togglePlayerControls(1)" id="player1Controls">Controls: Arrow Keys</div>
         <img width="32px" height="32px" src="images/player.png">
-        <div>Character: Frank</div>
-        <div>Color: White</div>
+        <div class="playerBtn">Character: Frank</div>
+        <div class="playerBtn">Color: White</div>
       </div>
 
       <div id="player2Select" class="playerSelect">
         <div>Player 2</div>
-        <div>Controls: Arrow Keys</div>
+        <div class="playerBtn" onclick="togglePlayerControls(2)" id="player2Controls">Controls: WASD</div>
         <img width="32px" height="32px" src="images/player.png">
-        <div>Character: Frank</div>
-        <div>Color: White</div>
+        <div class="playerBtn">Character: Frank</div>
+        <div class="playerBtn">Color: White</div>
       </div>
     </div>
     <div class="spacingBlock"></div>
@@ -66,24 +66,24 @@
     <div class="row" style="width: 400px;">
       <div id="player3Select" class="playerSelect">
         <div>Player 3</div>
-        <div>Controls: Arrow Keys</div>
+        <div class="playerBtn" onclick="togglePlayerControls(3)" id="player3Controls">Controls: IJKL</div>
         <img width="32px" height="32px" src="images/player.png">
-        <div>Character: Frank</div>
-        <div>Color: White</div> 
+        <div class="playerBtn">Character: Frank</div>
+        <div class="playerBtn">Color: White</div> 
       </div>
 
       <div id="player4Select" class="playerSelect">
         <div>Player 4</div>
-        <div>Controls: Arrow Keys</div>
+        <div class="playerBtn" onclick="togglePlayerControls(4)" id="player4Controls">Controls: Controller?</div>
         <img width="32px" height="32px" src="images/player.png">
-        <div>Character: Frank</div>
-        <div>Color: White</div>
+        <div class="playerBtn">Character: Frank</div>
+        <div class="playerBtn">Color: White</div>
       </div>
     </div>
     <div class="row">
       <div onclick="switchMenu('start')" class="textToggle" style="text-decoration: underline;">Back</div>
       <div class="spacingBlock"></div>
-      <div onclick="startGame()" class="textToggle" style="text-decoration: underline;">Start</div>
+      <div onclick="startGame()" class="textToggle" style="text-decoration: underline;" id="playerMenuStartBtn">Start</div>
     </div>
     <div id="mobileNote2" class="footnote">*On mobile there is a maximum of two players</div>
   </div>

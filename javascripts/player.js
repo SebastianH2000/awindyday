@@ -40,37 +40,6 @@ animationStateArr[0] = {frameCount: 1, name: 'idle'};
 //name system like spriteName-stance-number
 spriteArr['frank'] = [{id: 'player', element: document.getElementById('player')}];
 
-/*function collideSolids(xPos, yPos, shouldBeSet) {
-    let colliding = false;
-    for (let i = 0; i < solidArr.length; i++) {
-        if (shouldBeSet !== undefined) {
-            if (shouldBeSet && solidArr[i].isSet) {
-                let topEdge = solidArr[i].topEdge;
-                let bottomEdge = solidArr[i].bottomEdge;
-                if (topEdge > yPos && bottomEdge < yPos + 16) {
-                    let leftEdge = solidArr[i].position.x - solidArr[i].width/2;
-                    let rightEdge = solidArr[i].position.x + solidArr[i].width/2;
-                    if ((xPos - 8 < rightEdge) && (xPos + 8 > leftEdge) ) {
-                        colliding = true;
-                    }
-                }
-            }
-        }
-        else {
-            let topEdge = solidArr[i].topEdge;
-            let bottomEdge = solidArr[i].bottomEdge;
-            if (topEdge > yPos && bottomEdge < yPos + 16) {
-                let leftEdge = solidArr[i].position.x - solidArr[i].width/2;
-                let rightEdge = solidArr[i].position.x + solidArr[i].width/2;
-                if ((xPos - 8 < rightEdge) && (xPos + 8 > leftEdge) ) {
-                    colliding = true;
-                }
-            }
-        }
-    }
-    return colliding;
-}*/
-
 class Player {
     constructor (playerID,xPos,controls) {
         this.remainder = new Vector(0,0);
@@ -307,6 +276,42 @@ class Player {
     }
 }
 
+var validControls = true;
+
+function togglePlayerControls(playerID) {
+    if (document.getElementById('player' + playerID + 'Controls').innerHTML === 'Controls: Arrow Keys') {
+        document.getElementById('player' + playerID + 'Controls').innerHTML = 'Controls: WASD';
+    }
+    else if (document.getElementById('player' + playerID + 'Controls').innerHTML === 'Controls: WASD') {
+        document.getElementById('player' + playerID + 'Controls').innerHTML = 'Controls: IJKL';
+    }
+    else if (document.getElementById('player' + playerID + 'Controls').innerHTML === 'Controls: IJKL') {
+        document.getElementById('player' + playerID + 'Controls').innerHTML = 'Controls: Arrow Keys';
+    }
+    //test var for the loop
+    let controlValid = true;
+
+    //stop underlining toggles
+    for (let i = 0; i < playerNum; i++) {
+        document.getElementById('player' + (i+1) + 'Controls').style.textDecoration = "none";
+    }
+    document.getElementById('playerMenuStartBtn').style.textDecoration = "underline white";
+
+    //re-underline toggles if needed and check if the controls are valid
+    for (let i = 0; i < playerNum; i++) {
+        for (let j = 0; j < playerNum; j++) {
+            if (i !== j && document.getElementById('player' + (i+1) + 'Controls').innerHTML === document.getElementById('player' + (j+1) + 'Controls').innerHTML) {
+                controlValid = false;
+                document.getElementById('player' + (i+1) + 'Controls').style.textDecoration = "underline red";
+                document.getElementById('player' + (j+1) + 'Controls').style.textDecoration = "underline red";
+                document.getElementById('playerMenuStartBtn').style.textDecoration = "underline red";
+            }
+        }
+    }
+    //set the global variable to the test one
+    validControls = controlValid;
+}
+
 var playerSpawnDist = 400;
 
 //ikjl
@@ -315,25 +320,38 @@ map[75] = false;
 map[74] = false;
 map[76] = false;
 
+
+
 function startGame() {
-    for (let i = 0; i < playerNum; i++) {
-        //playerArr[i] = new Player(i, Math.floor(((i+1)/(playerNum+1))*playerSpawnDist-(playerSpawnDist/2)), {type: 'keyboard', up: 38, right: 39, down: 40, left: 37});
-        if (platform === 'computer') {
-            if (i === 0) {
-                playerArr[i] = new Player(i+1, Math.floor(((i+1)/(playerNum+1))*playerSpawnDist-(playerSpawnDist/2)), {type: 'keyboard', up: 38, right: 39, down: 40, left: 37});
-            }
-            else if (i === 1) {
-                playerArr[i] = new Player(i+1, Math.floor(((i+1)/(playerNum+1))*playerSpawnDist-(playerSpawnDist/2)), {type: 'keyboard', up: 87, right: 68, down: 83, left: 65});
-            }
-            else if (i === 2) {
-                playerArr[i] = new Player(i+1, Math.floor(((i+1)/(playerNum+1))*playerSpawnDist-(playerSpawnDist/2)), {type: 'keyboard', up: 73, right: 76, down: 75, left: 74});
+    if (validControls) {
+        for (let i = 0; i < playerNum; i++) {
+            //playerArr[i] = new Player(i, Math.floor(((i+1)/(playerNum+1))*playerSpawnDist-(playerSpawnDist/2)), {type: 'keyboard', up: 38, right: 39, down: 40, left: 37});
+            if (platform === 'computer') {
+                if (document.getElementById('player' + (i+1) + 'Controls').innerHTML === 'Controls: Arrow Keys') {
+                    playerArr[i] = new Player(i+1, Math.floor(((i+1)/(playerNum+1))*playerSpawnDist-(playerSpawnDist/2)), {type: 'keyboard', up: 38, right: 39, down: 40, left: 37});
+                }
+                else if (document.getElementById('player' + (i+1) + 'Controls').innerHTML === 'Controls: WASD') {
+                    playerArr[i] = new Player(i+1, Math.floor(((i+1)/(playerNum+1))*playerSpawnDist-(playerSpawnDist/2)), {type: 'keyboard', up: 87, right: 68, down: 83, left: 65});
+                }
+                else if (document.getElementById('player' + (i+1) + 'Controls').innerHTML === 'Controls: IJKL') {
+                    playerArr[i] = new Player(i+1, Math.floor(((i+1)/(playerNum+1))*playerSpawnDist-(playerSpawnDist/2)), {type: 'keyboard', up: 73, right: 76, down: 75, left: 74});
+                }
+                /*if (i === 0) {
+                    playerArr[i] = new Player(i+1, Math.floor(((i+1)/(playerNum+1))*playerSpawnDist-(playerSpawnDist/2)), {type: 'keyboard', up: 38, right: 39, down: 40, left: 37});
+                }
+                else if (i === 1) {
+                    playerArr[i] = new Player(i+1, Math.floor(((i+1)/(playerNum+1))*playerSpawnDist-(playerSpawnDist/2)), {type: 'keyboard', up: 87, right: 68, down: 83, left: 65});
+                }
+                else if (i === 2) {
+                    playerArr[i] = new Player(i+1, Math.floor(((i+1)/(playerNum+1))*playerSpawnDist-(playerSpawnDist/2)), {type: 'keyboard', up: 73, right: 76, down: 75, left: 74});
+                }*/
             }
         }
+        switchMenu('game');
+        gameStates.playing = true;
+        blockTimer = -2;
+        solidArr.length = 1;
     }
-    switchMenu('game');
-    gameStates.playing = true;
-    blockTimer = -2;
-    solidArr.length = 1;
 }
 
 //function playerMenu() {

@@ -99,7 +99,10 @@ canvas, div {
 }
 
 .playerBtn {
-    padding: 4px 8px 0px 8px;
+    width: 180px;
+    text-align: center;
+    padding: 4px 0px 0px 0px;
+    height: 14px;
 }
 
 .playerBtn:hover {
