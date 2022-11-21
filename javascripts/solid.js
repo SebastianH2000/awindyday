@@ -106,12 +106,29 @@ class Solid {
 
 solidArr = new Array(1);
 solidArr[0] = new Solid(0,new Vector(0,-16),400,16,true);
-//solidArr[1] = new Solid(1,new Vector(0,40),80,48,true);
-//solidArr[2] = new Solid(2,new Vector(48,24),80,16,true);
-//solidArr[3] = new Solid(3,new Vector(-104,72),64,16,true);
-//solidArr[4] = new Solid(4,new Vector(-104,104),64,16);
-//solidArr[5] = new Solid(5,new Vector(0,104),64,32);
 
+//generate new boxes to fall from the sky
 function createNewBox() {
-    solidArr.push(new Solid(solidArr.length,new Vector((Math.floor(Math.random()*25)*16-192),128),16,16));
+    let testPos = (Math.floor(Math.random()*25)*16-192);
+    let isColliding = true;
+    let testCount = 0;
+    //check to make sure that box isn't generating on collision with anything else
+    while (isColliding && testCount < 25) {
+        testPos = (Math.floor(Math.random()*25)*16-192);
+        isColliding = false;
+        for (let i = 0; i < playerNum; i++) {
+            if (rectCollider({x: playerArr[i].position.x, y: playerArr[i].position.y, width: playerArr[i].width, height: playerArr[i].height}, {x: testPos, y: 128, width: 16, height: 16})) {
+                isColliding = true;
+            }
+        }
+        for (let i = 0; i < solidArr.length; i++) {
+            if (rectCollider({x: solidArr[i].position.x, y: solidArr[i].position.y, width: solidArr[i].width, height: solidArr[i].height}, {x: testPos, y: 128, width: 16, height: 16})) {
+                isColliding = true;
+            }
+        }
+        testCount++;
+    }
+    if (testCount < 25) {
+        solidArr.push(new Solid(solidArr.length,new Vector(testPos,128),16,16));
+    }
 }
