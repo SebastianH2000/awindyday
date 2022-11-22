@@ -35,7 +35,7 @@ class Solid {
                 if (bottomEdge < playerArr[i].position.y + 16 && topEdge > playerArr[i].position.y - 8) {
                     if ((playerArr[i].position.x - 8 < rightEdge) && (playerArr[i].position.x + 8 > leftEdge) ) {
                         if (playerArr[i].isGrounded) {
-                            playerArr[i].kill();
+                            playerArr[i].kill(i+1);
                         }
                         else {
                             playerArr[i].bump(this.position.y - this.height/2 - 8,0-this.speed/2*gameSpeed);
@@ -89,6 +89,7 @@ class Solid {
                         else {
                             move.y = 0;
                             this.isSet = true;
+                            score++;
                             this.speed = 0;
                         }
                     }
@@ -100,16 +101,18 @@ class Solid {
     }
 
     Highlight(color) {
-        ctx.drawImage(document.getElementById('1x1block1'),this.position.x - this.width/2, (-this.position.y) - this.height/2,this.width,this.height);
+        ctx.drawImage(document.getElementById('1x1block1'),this.position.x - this.width/2 - camera.position.x, (-this.position.y) - this.height/2 + camera.position.y,this.width,this.height);
     }
 }
 
 solidArr = new Array(1);
 solidArr[0] = new Solid(0,new Vector(0,-16),400,16,true);
 
+
 //generate new boxes to fall from the sky
 function createNewBox() {
     let testPos = (Math.floor(Math.random()*25)*16-192);
+    let yPos = Math.floor(camera.position.y/16)*16+128;
     let isColliding = true;
     let testCount = 0;
     //check to make sure that box isn't generating on collision with anything else
@@ -117,18 +120,19 @@ function createNewBox() {
         testPos = (Math.floor(Math.random()*25)*16-192);
         isColliding = false;
         for (let i = 0; i < playerNum; i++) {
-            if (rectCollider({x: playerArr[i].position.x, y: playerArr[i].position.y, width: playerArr[i].width, height: playerArr[i].height}, {x: testPos, y: 128, width: 16, height: 16})) {
+            if (rectCollider({x: playerArr[i].position.x, y: playerArr[i].position.y, width: playerArr[i].width, height: playerArr[i].height}, {x: testPos, y: yPos, width: 16, height: 16})) {
                 isColliding = true;
             }
         }
         for (let i = 0; i < solidArr.length; i++) {
-            if (rectCollider({x: solidArr[i].position.x, y: solidArr[i].position.y, width: solidArr[i].width, height: solidArr[i].height}, {x: testPos, y: 128, width: 16, height: 16})) {
+            if (rectCollider({x: solidArr[i].position.x, y: solidArr[i].position.y, width: solidArr[i].width, height: solidArr[i].height}, {x: testPos, y: yPos, width: 16, height: 16})) {
                 isColliding = true;
             }
         }
         testCount++;
     }
     if (testCount < 25) {
-        solidArr.push(new Solid(solidArr.length,new Vector(testPos,128),16,16));
+        let yPos = Math.floor(camera.position.y/16)*16+128;
+        solidArr.push(new Solid(solidArr.length,new Vector(testPos,yPos),16,16));
     }
 }

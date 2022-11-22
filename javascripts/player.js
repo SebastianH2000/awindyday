@@ -1,6 +1,6 @@
 var camera = {
     position: new Vector(0,0),
-    roundPosition: new Vector(0,0)
+    targetPosition: new Vector(0,0)
 }
 
 var gameStates = {
@@ -19,6 +19,8 @@ var platform = 'computer';
 
 var gameSpeedMult = 1;
 var gameSpeed = 1;
+
+var score = 0;
 
 //player animation stuffs
 var spriteNum = 1;
@@ -58,7 +60,9 @@ class Player {
         this.animationState = 'idle';
         this.animationTimer = 1;
         this.sprite = 'frank';
-        this.currentCanvas = ''
+        this.currentCanvas = '';
+        this.lowestYPos = 0;
+        this.isAlive = true;
         if (playerID === 1) {
             this.color = "#FFFFFF";
         }
@@ -87,10 +91,25 @@ class Player {
         }
     }
 
-    kill () {
+    kill (playerID) {
         if (playerNum === 1) {
             switchMenu('player');
             gameStates.playing = false;
+            console.log('Player 1 died! Their score was: ' + score);
+        }
+        else {
+            if (playerArr[playerID-1].isAlive) {
+                console.log('Player ' + playerID + ' died! Their score was: ' + score);
+            }
+            playerArr[playerID-1].isAlive = false;
+            let aliveCount = 0;
+            for (let i = 0; i < playerNum; i++) {
+                if (playerArr[i].isAlive) aliveCount++;
+            }
+            if (aliveCount === 0) {
+                switchMenu('player');
+                gameStates.playing = false;
+            }
         }
     }
 
@@ -351,17 +370,8 @@ function startGame() {
         gameStates.playing = true;
         blockTimer = -2;
         solidArr.length = 1;
+        camera.targetPosition.y = 0;
+        score = 0;
+        frameCount = 0;
     }
-}
-
-//function playerMenu() {
-//    switchMenu('player');
-//}
-
-//hideElement('startMenu');
-//startGame();
-
-function killFrank() {
-    playerArr = new Array(playerNum);
-    startGame();
 }

@@ -6,6 +6,8 @@ var lastPage = new Vector(0,0);
 
 var blockTimer = -2;
 
+var totalFrames = 0;
+
 function mainLoop() {
     window.scroll(0,0)
     let win = window,
@@ -30,18 +32,19 @@ function mainLoop() {
     ctx.imageSmoothingEnabled = false;
 
     if (gameStates.mainMenu) {
-        //ctx.drawImage(document.getElementById("title"),-128,-128,256,64);
+
     }
 
+    //if the game is in play mode
     else if (gameStates.playing) {
-        ctx.drawImage(document.getElementById("groundCanvas"),-200,camera.roundPosition.y+solidArr[0].height/2,400,16);
-
+        frameCount++;
+        //player physics
         for (let i = 0; i < playerArr.length; i++) {
             playerArr[i].move();
             playerArr[i].physics();
         }
 
-        ctx.fillStyle = 'white';
+        //solid physics
         for (let i = 0; i < solidArr.length; i++) {
             if (!solidArr[i].isSet) {
                 if (solidArr[i].warningTimer > 0) {
@@ -53,25 +56,57 @@ function mainLoop() {
                     solidArr[i].speed += solidArr[i].fallSpeed/4;
                 }
             }
-            if (i !== 0) {
-                solidArr[i].Highlight('red');
-                /*if (solidArr[i].isSet) {
-                    solidArr[i].Highlight('red');
+        }
+        
+        //calculate camera position
+        if (playerNum !== undefined && playerNum === 1 && playerArr[0] !== undefined && playerArr[0].isGrounded) {
+            if (playerArr[0].position.y > camera.targetPosition.y) {
+                camera.targetPosition.y = playerArr[0].position.y;
+            }
+            camera.position.y = Math.floor(lerp(camera.position.y,camera.targetPosition.y,0.10));
+        }
+        else if (playerNum !== undefined && playerNum > 1 && playerArr[0] !== undefined) {
+            let sumYPos = 0;
+            let deadCount = 0;
+            for (let i = 0; i < playerNum; i++) {
+                if (playerArr[i].isAlive) {
+                    if (playerArr[i].isGrounded && playerArr[i].position.y > playerArr[i].lowestYPos) {
+                        playerArr[i].lowestYPos = playerArr[i].position.y;
+                    }
+                    sumYPos += playerArr[i].lowestYPos;
                 }
-                else {
-                    ctx.fillStyle = 'red';
-                    ctx.fillRect(solidArr[i].position.x - solidArr[i].width/2, (-solidArr[i].position.y) - solidArr[i].height/2+8,solidArr[i].width,solidArr[i].height);
-                }*/
+                else deadCount++;
+            }
+            camera.targetPosition.y = Math.floor(sumYPos/(16*(playerNum-deadCount)))*16;
+            camera.position.y = Math.floor(lerp(camera.position.y,camera.targetPosition.y,0.10));
+            for (let i = 0; i < playerNum; i++) {
+                if (playerArr[i].position.y < (camera.position.y-160)) {
+                    playerArr[i].kill(i+1);
+                }
             }
         }
-        for (let i = 0; i < playerNum; i++) {
-            if (playerArr[i].facing === 'left') {
-                ctx.drawImage(document.getElementById("player"),playerArr[i].position.x-(playerArr[i].width/2),(-playerArr[i].position.y)-(playerArr[i].height/2),playerArr[i].width,playerArr[i].height);
+
+        //draw ground solid
+        ctx.drawImage(document.getElementById("groundCanvas"),-200,camera.position.y+solidArr[0].height/2,400,16);
+
+        //draw solids
+        for (let i = 0; i < solidArr.length; i++) {
+            if (i !== 0) {
+                solidArr[i].Highlight('red');
             }
-            else {
-                ctx.scale(-1,1);
-                ctx.drawImage(document.getElementById("player"),0-playerArr[i].position.x-(playerArr[i].width/2),(-playerArr[i].position.y)-(playerArr[i].height/2),playerArr[i].width,playerArr[i].height);
-                ctx.scale(-1,1);
+        }
+
+        //draw players
+        for (let i = 0; i < playerNum; i++) {
+            if (playerArr[i].isAlive || Math.floor(frameCount / fps*3) % 2 === 0) {
+                if (playerArr[i].facing === 'left') {
+                    ctx.drawImage(document.getElementById("player"),playerArr[i].position.x-(playerArr[i].width/2),(-playerArr[i].position.y)-(playerArr[i].height/2) + camera.position.y,playerArr[i].width,playerArr[i].height);
+                }
+                else {
+                    ctx.scale(-1,1);
+                    ctx.drawImage(document.getElementById("player"),0-playerArr[i].position.x-(playerArr[i].width/2),(-playerArr[i].position.y)-(playerArr[i].height/2) + camera.position.y,playerArr[i].width,playerArr[i].height);
+                    ctx.scale(-1,1);
+                }
             }
         }
 
