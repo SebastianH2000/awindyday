@@ -92,4 +92,60 @@ function toggleGameMode() {
     }
 }
 
+function togglePlayerControls(playerID) {
+    if (document.getElementById('player' + playerID + 'Controls').innerHTML === 'Controls: Arrow Keys') {
+        document.getElementById('player' + playerID + 'Controls').innerHTML = 'Controls: WASD';
+    }
+    else if (document.getElementById('player' + playerID + 'Controls').innerHTML === 'Controls: WASD') {
+        document.getElementById('player' + playerID + 'Controls').innerHTML = 'Controls: IJKL';
+    }
+    else if (document.getElementById('player' + playerID + 'Controls').innerHTML === 'Controls: IJKL') {
+        document.getElementById('player' + playerID + 'Controls').innerHTML = 'Controls: Arrow Keys';
+    }
+    //test var for the loop
+    let controlValid = true;
+
+    //stop underlining toggles
+    for (let i = 0; i < playerNum; i++) {
+        document.getElementById('player' + (i+1) + 'Controls').style.textDecoration = "none";
+    }
+    document.getElementById('playerMenuStartBtn').style.textDecoration = "underline white";
+
+    //re-underline toggles if needed and check if the controls are valid
+    for (let i = 0; i < playerNum; i++) {
+        for (let j = 0; j < playerNum; j++) {
+            if (i !== j && document.getElementById('player' + (i+1) + 'Controls').innerHTML === document.getElementById('player' + (j+1) + 'Controls').innerHTML) {
+                controlValid = false;
+                document.getElementById('player' + (i+1) + 'Controls').style.textDecoration = "underline red";
+                document.getElementById('player' + (j+1) + 'Controls').style.textDecoration = "underline red";
+                document.getElementById('playerMenuStartBtn').style.textDecoration = "underline red";
+            }
+        }
+    }
+    //set the global variable to the test one
+    validControls = controlValid;
+}
+
+function getPlayerColor(color) {
+    let searchingFor = 'name';
+    if (color.substring(0,1) === '#') {
+        searchingFor = 'color';
+    }
+    for (let i = 0; i < colorNum; i++) {
+        if (color === colorArr[i][searchingFor]) {
+            return i;
+        }
+    }
+}
+
+function togglePlayerColor(playerID) {
+    let currentColor = getPlayerColor(document.getElementById('player' + (playerID) + 'Color').innerHTML.substring(7))
+    let nextColor = currentColor + 1;
+    if (nextColor >= colorNum) {
+        nextColor = 0;
+    }
+    console.log(nextColor)
+    document.getElementById('player' + (playerID) + 'Color').innerHTML = "Color: " + colorArr[nextColor].name;
+}
+
 switchMenu('start');

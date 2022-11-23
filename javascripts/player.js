@@ -63,7 +63,8 @@ class Player {
         this.currentCanvas = '';
         this.lowestYPos = 0;
         this.isAlive = true;
-        if (playerID === 1) {
+        this.color = colorArr[getPlayerColor(document.getElementById('player' + (playerID) + 'Color').innerHTML.substring(7))].color;
+        /*if (playerID === 1) {
             this.color = "#FFFFFF";
         }
         else if (playerID === 2) {
@@ -74,7 +75,7 @@ class Player {
         }
         else if (playerID === 4) {
             this.color = "#0000FF";
-        }
+        }*/
     }
 
     drawCanvases () {
@@ -297,40 +298,6 @@ class Player {
 
 var validControls = true;
 
-function togglePlayerControls(playerID) {
-    if (document.getElementById('player' + playerID + 'Controls').innerHTML === 'Controls: Arrow Keys') {
-        document.getElementById('player' + playerID + 'Controls').innerHTML = 'Controls: WASD';
-    }
-    else if (document.getElementById('player' + playerID + 'Controls').innerHTML === 'Controls: WASD') {
-        document.getElementById('player' + playerID + 'Controls').innerHTML = 'Controls: IJKL';
-    }
-    else if (document.getElementById('player' + playerID + 'Controls').innerHTML === 'Controls: IJKL') {
-        document.getElementById('player' + playerID + 'Controls').innerHTML = 'Controls: Arrow Keys';
-    }
-    //test var for the loop
-    let controlValid = true;
-
-    //stop underlining toggles
-    for (let i = 0; i < playerNum; i++) {
-        document.getElementById('player' + (i+1) + 'Controls').style.textDecoration = "none";
-    }
-    document.getElementById('playerMenuStartBtn').style.textDecoration = "underline white";
-
-    //re-underline toggles if needed and check if the controls are valid
-    for (let i = 0; i < playerNum; i++) {
-        for (let j = 0; j < playerNum; j++) {
-            if (i !== j && document.getElementById('player' + (i+1) + 'Controls').innerHTML === document.getElementById('player' + (j+1) + 'Controls').innerHTML) {
-                controlValid = false;
-                document.getElementById('player' + (i+1) + 'Controls').style.textDecoration = "underline red";
-                document.getElementById('player' + (j+1) + 'Controls').style.textDecoration = "underline red";
-                document.getElementById('playerMenuStartBtn').style.textDecoration = "underline red";
-            }
-        }
-    }
-    //set the global variable to the test one
-    validControls = controlValid;
-}
-
 var playerSpawnDist = 400;
 
 //ikjl
@@ -371,6 +338,7 @@ function startGame() {
         blockTimer = -2;
         solidArr.length = 1;
         camera.targetPosition.y = 0;
+        camera.position.y = 0;
         score = 0;
         frameCount = 0;
     }

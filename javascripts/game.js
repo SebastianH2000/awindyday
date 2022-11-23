@@ -8,6 +8,8 @@ var blockTimer = -2;
 
 var totalFrames = 0;
 
+var isLocal = true;
+
 function mainLoop() {
     window.scroll(0,0)
     let win = window,
@@ -63,7 +65,6 @@ function mainLoop() {
             if (playerArr[0].position.y > camera.targetPosition.y) {
                 camera.targetPosition.y = playerArr[0].position.y;
             }
-            camera.position.y = Math.floor(lerp(camera.position.y,camera.targetPosition.y,0.10));
         }
         else if (playerNum !== undefined && playerNum > 1 && playerArr[0] !== undefined) {
             let sumYPos = 0;
@@ -78,13 +79,14 @@ function mainLoop() {
                 else deadCount++;
             }
             camera.targetPosition.y = Math.floor(sumYPos/(16*(playerNum-deadCount)))*16;
-            camera.position.y = Math.floor(lerp(camera.position.y,camera.targetPosition.y,0.10));
+            //camera.position.y = Math.floor(lerp(camera.position.y,camera.targetPosition.y,0.10));
             for (let i = 0; i < playerNum; i++) {
                 if (playerArr[i].position.y < (camera.position.y-160)) {
                     playerArr[i].kill(i+1);
                 }
             }
         }
+        camera.position.y = Math.floor(lerp(camera.position.y,camera.targetPosition.y,0.10));
 
         //draw ground solid
         ctx.drawImage(document.getElementById("groundCanvas"),-200,camera.position.y+solidArr[0].height/2,400,16);
@@ -99,21 +101,30 @@ function mainLoop() {
         //draw players
         for (let i = 0; i < playerNum; i++) {
             if (playerArr[i].isAlive || Math.floor(frameCount / fps*3) % 2 === 0) {
+                let playerImg = document.getElementById("player");
+                if (!isLocal) {
+                    if (!isLocal && document.getElementById((i+1) + "-frank-Idle-1") !== null) {
+                        playerImg = document.getElementById((i+1) + "-frank-Idle-1");
+                    }
+                    else {
+                        playerArr[i].drawCanvases();
+                    }
+                }
                 if (playerArr[i].facing === 'left') {
-                    ctx.drawImage(document.getElementById("player"),playerArr[i].position.x-(playerArr[i].width/2),(-playerArr[i].position.y)-(playerArr[i].height/2) + camera.position.y,playerArr[i].width,playerArr[i].height);
+                    ctx.drawImage(playerImg,playerArr[i].position.x-(playerArr[i].width/2),(-playerArr[i].position.y)-(playerArr[i].height/2) + camera.position.y,playerArr[i].width,playerArr[i].height);
                 }
                 else {
                     ctx.scale(-1,1);
-                    ctx.drawImage(document.getElementById("player"),0-playerArr[i].position.x-(playerArr[i].width/2),(-playerArr[i].position.y)-(playerArr[i].height/2) + camera.position.y,playerArr[i].width,playerArr[i].height);
+                    ctx.drawImage(playerImg,0-playerArr[i].position.x-(playerArr[i].width/2),(-playerArr[i].position.y)-(playerArr[i].height/2) + camera.position.y,playerArr[i].width,playerArr[i].height);
                     ctx.scale(-1,1);
                 }
             }
         }
 
         //create blocks
-        if (blockTimer > 1.5) {
+        if (blockTimer > (1/(Math.sqrt(frameCount/300)))) {
             createNewBox();
-            blockTimer = 0;
+            blockTimer = 0; //highschore of 718
         }
         else {
             blockTimer += 1/fps;
