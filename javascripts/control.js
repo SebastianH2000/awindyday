@@ -193,15 +193,20 @@ function drawSprite(referenceElement, color) {
     tempCan.getContext('2d').drawImage(document.getElementById(referenceElement),0,0,16,16);
     let imgArr = tempCan.getContext('2d').getImageData(0,0,16,16);
     let returnArr = new Uint8ClampedArray(1024);
-    for (i = 0; i < imgArr.data.length; i += 4) {
-        if (imgArr.data[i] === 255) {
+    for (let i = 0; i < imgArr.data.length; i += 4) {
+        if (imgArr.data[i] === 255 && imgArr.data[i+3] > 0) {
             returnArr[i + 0] = Number('0x' + colorString.slice(0, 2));
-            returnArr[i + 1] = Number('0x' + colorString.slice(2, 2));
-            returnArr[i + 2] = Number('0x' + colorString.slice(4, 2));
+            returnArr[i + 1] = Number('0x' + colorString.slice(2, 4));
+            returnArr[i + 2] = Number('0x' + colorString.slice(4, 6));
+            returnArr[i + 3] = 255;
+        }
+        else if (imgArr.data[i] === 0) {
+            returnArr[i + 0] = 0;
+            returnArr[i + 1] = 0;
+            returnArr[i + 2] = 0;
             returnArr[i + 3] = 255;
         }
     }
-    console.log('heeh');
     let data = new ImageData(returnArr, 16, 16);
     return data;
 }

@@ -5,6 +5,7 @@ var fpsInv = 1000/fps;
 var lastPage = new Vector(0,0);
 
 var blockTimer = -2;
+var solidVariation = 8;
 
 var totalFrames = 0;
 
@@ -79,14 +80,30 @@ function mainLoop() {
                 else deadCount++;
             }
             camera.targetPosition.y = Math.floor(sumYPos/(16*(playerNum-deadCount)))*16;
-            //camera.position.y = Math.floor(lerp(camera.position.y,camera.targetPosition.y,0.10));
             for (let i = 0; i < playerNum; i++) {
                 if (playerArr[i].position.y < (camera.position.y-160)) {
                     playerArr[i].kill(i+1);
                 }
             }
         }
-        camera.position.y = Math.floor(lerp(camera.position.y,camera.targetPosition.y,0.10));
+        camera.position.y = Math.ceil(lerp(camera.position.y,camera.targetPosition.y,0.10));
+
+        //draw distance markers
+        
+        /*for (let i = 0; i < 2; i++) {
+            let thisMarkerOff = camera.position.y % 160;
+            let thisMarkerRow = Math.floor(camera.position.y / 160);
+            let thisMarkerNum = thisMarkerRow*10;
+            ctx.fillStyle = 'white';
+            //if (thisMarkerNum !== 0) {
+                ctx.fillRect(-200,-1+thisMarkerOff,175,2);
+                ctx.fillRect(25,-1+thisMarkerOff,175,2);
+                ctx.font = '36px pixel';
+                ctx.fillText('Player',0,-1+thisMarkerOff);
+            //}
+            ctx.fillRect(-200,-1+thisMarkerOff-160,175,2);
+            ctx.fillRect(25,-1+thisMarkerOff-160,175,2);
+        }*/
 
         //draw ground solid
         ctx.drawImage(document.getElementById("groundCanvas"),-200,camera.position.y+solidArr[0].height/2,400,16);
@@ -94,7 +111,7 @@ function mainLoop() {
         //draw solids
         for (let i = 0; i < solidArr.length; i++) {
             if (i !== 0) {
-                solidArr[i].Highlight('red');
+                solidArr[i].Highlight();
             }
         }
 
@@ -122,9 +139,9 @@ function mainLoop() {
         }
 
         //create blocks
-        if (blockTimer > (1/(Math.sqrt(frameCount/300)))) {
+        if (blockTimer > (1/(Math.sqrt(frameCount/600)))) {
             createNewBox();
-            blockTimer = 0; //highschore of 718
+            blockTimer = 0;
         }
         else {
             blockTimer += 1/fps;
