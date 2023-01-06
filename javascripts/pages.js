@@ -148,4 +148,11 @@ function togglePlayerColor(playerID) {
     document.getElementById('player' + (playerID) + 'Color').innerHTML = "Color: " + colorArr[nextColor].name;
 }
 
+togglePlayerColor(2);
+togglePlayerColor(3);
+togglePlayerColor(3);
+togglePlayerColor(4);
+togglePlayerColor(4);
+togglePlayerColor(4);
+
 switchMenu('start');

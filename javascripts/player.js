@@ -332,6 +332,10 @@ function startGame() {
                     playerArr[i] = new Player(i+1, Math.floor(((i+1)/(playerNum+1))*playerSpawnDist-(playerSpawnDist/2)), {type: 'keyboard', up: 73, right: 76, down: 75, left: 74});
                 }*/
             }
+            playerArr[i].color === colorArr[getPlayerColor(document.getElementById('player' + (i+1) + 'Color').innerHTML.substring(7))].color;
+            if (!isLocal) {
+                playerArr[i].drawCanvases();
+            }
         }
         switchMenu('game');
         gameStates.playing = true;
