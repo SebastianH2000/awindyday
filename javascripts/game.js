@@ -9,7 +9,7 @@ var solidVariation = 8;
 
 var totalFrames = 0;
 
-var isLocal = true;
+var isLocal = false;
 
 function mainLoop() {
     window.scroll(0,0)
