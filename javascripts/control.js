@@ -198,7 +198,7 @@ function drawSprite(referenceElement, color) {
             returnArr[i + 0] = Number('0x' + colorString.slice(0, 2));
             returnArr[i + 1] = Number('0x' + colorString.slice(2, 4));
             returnArr[i + 2] = Number('0x' + colorString.slice(4, 6));
-            returnArr[i + 3] = 255;
+            returnArr[i + 3] = 0;
         }
         else if (imgArr.data[i] === 0) {
             returnArr[i + 0] = 0;
