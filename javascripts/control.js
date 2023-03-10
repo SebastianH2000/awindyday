@@ -198,13 +198,13 @@ function drawSprite(referenceElement, color) {
             returnArr[i + 0] = Number('0x' + colorString.slice(0, 2));
             returnArr[i + 1] = Number('0x' + colorString.slice(2, 4));
             returnArr[i + 2] = Number('0x' + colorString.slice(4, 6));
-            returnArr[i + 3] = 0;
+            returnArr[i + 3] = 255;
         }
         else if (imgArr.data[i] === 0) {
             returnArr[i + 0] = 0;
             returnArr[i + 1] = 0;
             returnArr[i + 2] = 0;
-            returnArr[i + 3] = 255;
+            returnArr[i + 3] = 0;
         }
     }
     let data = new ImageData(returnArr, 16, 16);
